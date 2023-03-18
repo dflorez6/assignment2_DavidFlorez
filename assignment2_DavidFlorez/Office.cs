@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -14,6 +15,7 @@ namespace assignment2_DavidFlorez
         //====================
         // Fields or Properties
         //====================
+        // * Office object has private member variable Appointments
         private List<Appointment> _appointments; // attribute or field
 
         //====================
@@ -22,29 +24,50 @@ namespace assignment2_DavidFlorez
         // Default
         public Office()
         {
-
-        }
-
-        // Non-default
-        public Office(int attributeName, string property, int staticProperty)
-        {
-
+            _appointments = new List<Appointment>();
         }
 
         //====================
         // Methods
         //====================
-        // Instance Method
-        public void InstanceMethod()
+        // ShowAppointments: Instance Method
+        // Accepts: ??
+        // Returns: List<Appointment>
+        // Description: 
+        public List<Appointment> ShowAppointments()
         {
-          //  Console.WriteLine(this._attributeName); // Prints instance._attribute_name
+            return _appointments;
         }
 
-        // Class / Static Method
-        public static void ClassMethod()
+        public int NumberOfAppointments()
         {
-          //  Console.WriteLine(Office.StaticProperty); // Prints Class.Property
+            return _appointments.Count;
         }
+
+        // BookAppointment: Instance Method
+        // Accepts: Appointment
+        // Returns: void
+        // Description: 
+        public void BookAppointment(Appointment appointment)
+        {
+            Console.WriteLine("BookAppointment Method--------");
+            Console.WriteLine(appointment);
+            Console.WriteLine(appointment.PatientName);
+            Console.WriteLine(appointment.GetType());
+
+            // Adds appointment
+            _appointments.Add(appointment);
+        }
+
+        // AppointmentToString: Virtual Instance Method
+        // Accepts: Appointment Object
+        // Returns: string
+        // Description:
+        public virtual string AppointmentToString(Appointment appointment)
+        {
+            return "";
+        }
+
 
     }
 
@@ -52,7 +75,7 @@ namespace assignment2_DavidFlorez
 
 // TODO: Assignment Requirements
 /*
- * Office object has private member variable Appointments
+ 
  * Office object has a Book Appointment method that ensures appointment time doesn't conflict with an already scheduled appointment
 */
 

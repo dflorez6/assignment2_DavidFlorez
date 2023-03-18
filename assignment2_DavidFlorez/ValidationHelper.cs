@@ -17,6 +17,26 @@ namespace assignment2_DavidFlorez
         //====================
         // Methods
         //====================
+        // IsValidPhoneNumber: Static Method
+        // Accepts: String
+        // Returns: Boolean
+        // Description: Method checks if a phone number passed as a string is in the correct format by matching a Regex pattern
+        public static bool IsValidFullName(string name)
+        {
+            // Regex
+            string pattern = @"^\w+\s\w+$"; // Regex 10 digit only numbers
+
+            // Validation
+            if (Regex.IsMatch(name, pattern))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         // IsValidPatientAge: Static Method
         // Accepts: DateTime
         // Returns: Boolean
@@ -72,12 +92,6 @@ namespace assignment2_DavidFlorez
         // Description: Method checks if a phone number passed as a string is in the correct format by matching a Regex pattern
         public static bool IsValidPhoneNumber(string phoneNumber)
         {
-            // TODO: Assignment Requirements
-            /*
-             * Uses a Regex to perform the validation
-             * Returns false if the string is null/empty/mismatches; true if whole matches the pattern
-            */
-
             // Regex
             string pattern = @"^\d{10}$"; // Regex 10 digit only numbers
 
@@ -117,7 +131,7 @@ namespace assignment2_DavidFlorez
         public static bool IsValidString(string patientInput)
         {
             // Validation
-            if (string.IsNullOrEmpty(patientInput))
+            if (!string.IsNullOrEmpty(patientInput))
             {
                 return true;
             }

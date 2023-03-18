@@ -50,6 +50,8 @@
             this.txtPatientName = new System.Windows.Forms.TextBox();
             this.lblPatientName = new System.Windows.Forms.Label();
             this.grbAppointmentInfo = new System.Windows.Forms.GroupBox();
+            this.lblErrorDuration = new System.Windows.Forms.Label();
+            this.lblErrorPurpose = new System.Windows.Forms.Label();
             this.txtAppointmentPurpose = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cboAppointmentDuration = new System.Windows.Forms.ComboBox();
@@ -298,6 +300,8 @@
             // 
             // grbAppointmentInfo
             // 
+            this.grbAppointmentInfo.Controls.Add(this.lblErrorDuration);
+            this.grbAppointmentInfo.Controls.Add(this.lblErrorPurpose);
             this.grbAppointmentInfo.Controls.Add(this.txtAppointmentPurpose);
             this.grbAppointmentInfo.Controls.Add(this.label3);
             this.grbAppointmentInfo.Controls.Add(this.cboAppointmentDuration);
@@ -312,6 +316,28 @@
             this.grbAppointmentInfo.TabStop = false;
             this.grbAppointmentInfo.Text = "Appointment Information";
             // 
+            // lblErrorDuration
+            // 
+            this.lblErrorDuration.AutoSize = true;
+            this.lblErrorDuration.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblErrorDuration.ForeColor = System.Drawing.Color.Red;
+            this.lblErrorDuration.Location = new System.Drawing.Point(167, 79);
+            this.lblErrorDuration.Name = "lblErrorDuration";
+            this.lblErrorDuration.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblErrorDuration.Size = new System.Drawing.Size(0, 19);
+            this.lblErrorDuration.TabIndex = 18;
+            // 
+            // lblErrorPurpose
+            // 
+            this.lblErrorPurpose.AutoSize = true;
+            this.lblErrorPurpose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblErrorPurpose.ForeColor = System.Drawing.Color.Red;
+            this.lblErrorPurpose.Location = new System.Drawing.Point(167, 132);
+            this.lblErrorPurpose.Name = "lblErrorPurpose";
+            this.lblErrorPurpose.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblErrorPurpose.Size = new System.Drawing.Size(0, 19);
+            this.lblErrorPurpose.TabIndex = 17;
+            // 
             // txtAppointmentPurpose
             // 
             this.txtAppointmentPurpose.Location = new System.Drawing.Point(16, 154);
@@ -319,6 +345,7 @@
             this.txtAppointmentPurpose.Name = "txtAppointmentPurpose";
             this.txtAppointmentPurpose.Size = new System.Drawing.Size(255, 156);
             this.txtAppointmentPurpose.TabIndex = 6;
+            this.txtAppointmentPurpose.Leave += new System.EventHandler(this.txtAppointmentPurpose_Leave);
             // 
             // label3
             // 
@@ -342,6 +369,7 @@
             this.cboAppointmentDuration.Name = "cboAppointmentDuration";
             this.cboAppointmentDuration.Size = new System.Drawing.Size(196, 25);
             this.cboAppointmentDuration.TabIndex = 4;
+            this.cboAppointmentDuration.Leave += new System.EventHandler(this.cboAppointmentDuration_Leave);
             // 
             // label2
             // 
@@ -521,5 +549,7 @@
         private Label lblErrorProvince;
         private Label lblErrorCity;
         private Label lblErrorAddress;
+        private Label lblErrorPurpose;
+        private Label lblErrorDuration;
     }
 }
