@@ -8,32 +8,23 @@ namespace assignment2_DavidFlorez
 {
     public partial class Form1 : Form
     {
+        //====================
+        // Object Declarations
+        //====================
+        Office office;
+        Appointment appointment;
+
+        //====================
+        // Form
+        //====================
         public Form1()
         {
             InitializeComponent();
+
+            // Creating instances on Form // TODO: * IMPORTANT STEP TO CREATE INSTANCES OF THE CLASSES
+            office = new Office();
+            appointment = new Appointment();
         }
-
-        //====================
-        // Object Initializations
-        //====================
-        public Office OfficeObject()
-        {
-            return new Office();
-        }
-
-        public Appointment AppointmentObject()
-        {
-            return new Appointment();
-        }
-
-        //====================
-        // Form Load
-        //====================
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
 
         //====================
         // Book Appointment
@@ -41,21 +32,13 @@ namespace assignment2_DavidFlorez
         // TODO: Add Description
         private void btnBookAppointment_Click(object sender, EventArgs e)
         {
+            // Office office = OfficeInstance();
 
             // TODO: Assignment Requirements
             /*
              * Book appointment button shows correct message popups based on if there are errors present or not, as well as a 
              * success popup outlining the appointment time
             */
-
-            // TODO: Check into TimeSpan && its methods
-            // Console.WriteLine(TimeSpan.FromMinutes); 
-
-            Console.WriteLine("Office Object outside validation-----------");
-            Console.WriteLine(OfficeObject());
-            Console.WriteLine(OfficeObject().ShowAppointments());
-            Console.WriteLine(OfficeObject().NumberOfAppointments());
-
 
             // Capturing User Input: Patient's Data
             string patientName = txtPatientName.Text;
@@ -70,6 +53,7 @@ namespace assignment2_DavidFlorez
             // Capturing User Input: Appointment's Data
             DateTime appointmentTime = Convert.ToDateTime(dtpAppointmentTime.Text); // Convert Input Data (string) to DateTime
             string appointmentDuration = cboAppointmentDuration.Text;
+            int appointmentDurationIndex = cboAppointmentDuration.SelectedIndex;
             string appointmentPurpose = txtAppointmentPurpose.Text;
 
             //--------------------
@@ -97,123 +81,30 @@ namespace assignment2_DavidFlorez
                 // Instantiating Appointment Object (non-default constructor)
                 Appointment appointment = new Appointment(
                     patientName, patientDateOfBirth, patientAddress, patientCity, patientProvince, patientPostalCode, patientPhone, patientEmail,
-                    appointmentTime, appointmentDuration, appointmentPurpose
+                    appointmentTime, appointmentDuration, appointmentDurationIndex, appointmentPurpose
                     );
 
-                Console.WriteLine("Appointment Object before Booking Method-----------");
-                Console.WriteLine(appointment);
-                Console.WriteLine(appointment.PatientName);
-
-
                 // Booking an appointment
-                OfficeObject().BookAppointment(appointment);
-
-                Console.WriteLine("Office Object inside validation-----------");
-                Console.WriteLine(OfficeObject());
-                Console.WriteLine(OfficeObject().ShowAppointments());
-                Console.WriteLine(OfficeObject().NumberOfAppointments());
+                office.BookAppointment(appointment);
 
                 // TODO: NOT YET UNCOMMENT LATER
                 /*
-                Console.WriteLine("Appointment Object-------");
-                Console.WriteLine(appointment);
+                */
+                Console.WriteLine("Office Object inside validation-----------");
+                Console.WriteLine(office.NumberOfAppointments());
 
-                Console.WriteLine("Appointment Object String-------");
-                Console.WriteLine(appointment.ToString());
+
+                // TODO: NOT YET UNCOMMENT LATER
+                /*
+                Console.WriteLine("Office Object appointment list VALIDATED-----------");
+                foreach (var item in Office.ShowAppointments())
+                {
+                    Console.WriteLine(item);
+                }
                 */
 
-                // Console.WriteLine("Appointment Object Properties-------");
-                // Console.WriteLine(appointment.PatientName);
-                // Console.WriteLine(appointment.PatientDoB);
-                // Console.WriteLine(appointment.PatientAddress);
-                // Console.WriteLine(appointment.PatientCity);
-                // Console.WriteLine(appointment.PatientProvince);
-                // Console.WriteLine(appointment.PatientPostalCode);
-                // Console.WriteLine(appointment.PatientPhone);
-                // Console.WriteLine(appointment.PatientEmail);
-                // Console.WriteLine(appointment.AppointmentDuration);
-                // Console.WriteLine(appointment.AppointmentPurpose);
-                
-                // Console.WriteLine(appointment.AppointmentTime);
 
             }
-
-
-
-
-
-            try 
-            {
-
-
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            /*
-            if (validatedPatientName) 
-            {
-                // Input has been validated - do something
-            }
-            
-            if (validatedPatientAge) 
-            {
-                // Input has been validated -> do something with data   
-            }
-
-            if (validatedPatientAddress)
-            {
-                // Input has been validated -> do something
-            }
-
-            if (validatedPatientCity)
-            {
-                // Input has been validated -> do something
-            }
-
-            if (validatedPatientProvince)
-            {
-                // Input has been validated -> do something
-            }
-
-            if (validatedPatientPostalCode)
-            {
-                // Input has been validated -> do something
-            }
-
-            if (validatedPatientPhone)
-            {
-                // Input has been validated -> do something
-            }
-
-            if (validatedPatientEmail)
-            {
-                // Input has been validated -> do something
-            }
-
-            if (validatedAppointmentTime)
-            {
-                // Input has been validated -> do something
-            }
-
-            if (validatedAppointmentDuration)
-            {
-                // Input has been validated -> do something
-            }
-
-            if (validatedAppointmentPurpose)
-            {
-                // Input has been validated -> do something
-            }
-            */
-
-
-            // Console.WriteLine("patientAgeValidated");
-            // Console.WriteLine(validatedPatientAge); // >> 
-
 
         }
 
@@ -245,7 +136,7 @@ namespace assignment2_DavidFlorez
         // TODO: Add Description
         private void btnPreFillFields_Click(object sender, EventArgs e)
         {
-            Appointment appointment = AppointmentObject();
+            // Appointment appointment = AppointmentObject();
 
             // Prefill all the patient's fields
             txtPatientName.Text = appointment.PatientName;            

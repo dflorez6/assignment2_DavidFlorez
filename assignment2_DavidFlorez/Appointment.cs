@@ -24,7 +24,9 @@ namespace assignment2_DavidFlorez
         public string PatientPhone { get; set; }
         public string PatientEmail { get; set; }
         public DateTime AppointmentTime { get; set; }
+        public DateTime AppointmentEndTime { get; set; }
         public string AppointmentDuration { get; set; }
+        public int AppointmentDurationIndex { get; set; }
         public string AppointmentPurpose { get; set; }
 
         //====================
@@ -45,12 +47,13 @@ namespace assignment2_DavidFlorez
 
             // Appointment's Data
             AppointmentTime = DateTime.Now;
-            AppointmentDuration = "30 minutes";
+            AppointmentDuration = "15 minutes";
+            AppointmentDurationIndex = 0;
             AppointmentPurpose = "Some description here";
         }
 
         // Non-default
-        public Appointment(string patientName, DateTime patientDoB, string patientAddress, string patientCity, string patientProvince, string patientPostalCode, string patientPhone, string patientEmail, DateTime appointmentTime, string appointmentDuration, string appointmentPurpose)
+        public Appointment(string patientName, DateTime patientDoB, string patientAddress, string patientCity, string patientProvince, string patientPostalCode, string patientPhone, string patientEmail, DateTime appointmentTime, string appointmentDuration, int appointmentDurationIndex, string appointmentPurpose)
         {
             // Patient's data
             PatientName = patientName;
@@ -65,7 +68,11 @@ namespace assignment2_DavidFlorez
             // Appointment's Data
             AppointmentTime = appointmentTime;
             AppointmentDuration = appointmentDuration;
+            AppointmentDurationIndex = appointmentDurationIndex;
             AppointmentPurpose = appointmentPurpose;
+
+            // Calculates Appointment Time End Based on Appointment Time & Duration Params
+            AppointmentEndTime = CalculateAppointmentTimeEnd(appointmentTime, appointmentDurationIndex);
         }
 
         //====================
@@ -102,6 +109,37 @@ namespace assignment2_DavidFlorez
             return Convert.ToInt32(currentAge);
         }
 
+        // AgeConversion: Instance Method
+        // Accepts: DateTime & int
+        // Returns: DateTime
+        // Description: Calculates appointment time end based on appointment time & duration params
+        public DateTime CalculateAppointmentTimeEnd(DateTime appointmentTime, int appointmentDurationIndex)
+        {
+            string appointmentDuration = "";
+
+            switch (appointmentDurationIndex)
+            {
+                case 0:
+                    appointmentDuration = "15";
+                    break;
+                case 1:
+                    appointmentDuration = "30";
+                    break;
+                case 2:
+                    appointmentDuration = "45";
+                    break;
+                case 3:
+                    appointmentDuration = "60";
+                    break;
+            }
+
+            // Depending on the duration selected by the user from the combo box, the duration will be converted into TimeSpan
+            // and will be used to calculate the appointment's end time
+            TimeSpan durationInMinutes = TimeSpan.FromMinutes(int.Parse(appointmentDuration));
+            DateTime appointmentEndTime = AppointmentTime + durationInMinutes;
+
+            return appointmentEndTime;
+        }
 
 
 
