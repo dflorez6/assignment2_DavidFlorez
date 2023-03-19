@@ -15,9 +15,8 @@ namespace assignment2_DavidFlorez
     public class Office
     {
         //====================
-        // Fields or Properties
+        // Fields
         //====================
-        // * Office object has private member variable Appointments
         private List<Appointment> _appointments;
 
         //====================
@@ -32,47 +31,20 @@ namespace assignment2_DavidFlorez
         //====================
         // Methods
         //====================
-        // ShowAppointments: Static Method
-        // Accepts: ??
-        // Returns: List<Appointment>
-        // Description: TODO
-        public List<Appointment> ShowAppointments()
-        {
-            return _appointments;
-        }
-
-        // ShowAppointments: Static Method
-        // Accepts: ??
-        // Returns: List<Appointment>
-        // Description: TODO
-        public int NumberOfAppointments()
-        {
-            return _appointments.Count;
-        }
-
-        // BookAppointment: Static Method
-        // Accepts: Appointment
+        // BookAppointment: Instance Method
+        // Accepts: Appointment Object
         // Returns: void
-        // Description: TODO
+        // Description: The method receives an appointment object. It first checks if there are any appointment booked.
+        // If there are no appointments previously booked: The method will book the appointment and will display a success message
+        // If there are appointments previously booked: using .Exists List<T> Method to verify if the new appointment that the user is
+        // trying to book doesn't overlap with an existing appointment. .Exists returns a boolean, so the control flow will
+        // display an error message if the new appointment overlaps with an existing appoint. If the new appointment doesn't overlap,
+        // the method will book the appointment and will display a success message
         public void BookAppointment(Appointment appointment)
         {
             // Initial Declarations
             DateTime newAppointmentTime = appointment.AppointmentTime;
             DateTime newAppointmentEndTime = appointment.AppointmentEndTime;
-
-
-            /*
-            Console.WriteLine("Appointment Time");
-            Console.WriteLine(appointmentTime);
-            Console.WriteLine(appointmentDuration);
-            Console.WriteLine(appointmentDurationIndex);
-            Console.WriteLine(appTime);
-
-            Console.WriteLine("appointmentTimeEnd");
-            Console.WriteLine(appointmentTimeEnd);
-            // Console.WriteLine(durationInMinutes);
-            */
-
 
             // Validates previously booked appointments
             // If true: no validations required Add new appointment to Instance._appointments
@@ -82,6 +54,9 @@ namespace assignment2_DavidFlorez
                 // No appointments booked yet
                 // Add appointment record
                 _appointments.Add(appointment);
+
+                // Succesful appointment booked displays confirmation message
+                MessageBox.Show($"Succesfully booked your appointment on {appointment.AppointmentTime.ToString("MM-dd-yyyy")} at {appointment.AppointmentTime.ToString("H:mm")}", "Time Conflict", MessageBoxButtons.OK);
             }
             else
             {
@@ -94,74 +69,51 @@ namespace assignment2_DavidFlorez
                 // If false: The new appointment will be booked
                 if (isNewAppointmentOverlapping)
                 {
-                    // New appointment overlaps with existing appointment
+                    // New appointment overlaps with existing appointment will raise an error message
                     MessageBox.Show("That appointment time conflicts with another patient. Please select a different time.", "Time Conflict", MessageBoxButtons.OK);
                 }
                 else
                 {
                     // Add appointment record
                     _appointments.Add(appointment);
+
+                    // Succesful appointment booked displays confirmation message
+                    MessageBox.Show($"Succesfully booked your appointment on {appointment.AppointmentTime.ToString("MM-dd-yyyy")} at {appointment.AppointmentTime.ToString("H:mm")}", "Time Conflict", MessageBoxButtons.OK);
                 }
-
-
             }
-
-
-            // TODO: NOT YET UNCOMMENT LATER
-            /*
-            Console.WriteLine("Office Object appointment OFFICE-----------");
-            foreach (var item in ShowAppointments())
-            {
-                Console.WriteLine(item.PatientName);
-            }
-            */
-
         }
 
         // AppointmentToString: Virtual Instance Method
         // Accepts: Appointment Object
         // Returns: string
-        // Description: TODO
+        // Description: This method is needed to have an override method in the Appointment Class
         public virtual string AppointmentToString(Appointment appointment)
         {
             return "";
         }
 
 
+        //====================
+        // Helper Methods
+        //====================
+        // ReturnAppointments: Instance Method
+        // Accepts: No parameters
+        // Returns: List<Appointment>
+        // Description: Returns a list of all the booked appointments
+        public List<Appointment> ReturnAppointments()
+        {
+            return _appointments;
+        }
+
+        // NumberOfAppointments: Instance Method
+        // Accepts: No parameters
+        // Returns: int
+        // Description: Returns the number of appointments booked (0 or more). Used for control flow in the Print Button
+        public int NumberOfAppointments()
+        {
+            return _appointments.Count;
+        }
+
     }
 
 }
-
-// TODO: Assignment Requirements
-/*
- 
- * Office object has a Book Appointment method that ensures appointment time doesn't conflict with an already scheduled appointment
-*/
-
-
-
-/*
- 
-//====================
-// Creating Instances (objects) // Using Class
-//====================
-// from where I want to call it for example
-// Form Load 
-private void Form1_Load(object sender, EventArgs e)
-{
-    // Create Instance 
-    ClassName instanceName = new ClassName(); // creates new instance/object with default constructor
-    ClassName instanceName = new ClassName(argument1, argument2); // creates new instance/object with other constructor
-                   
-    // Update Property Values (setter)
-    instanceName.Property = value;
-
-    // Update Static Property Values (setter)
-    ClassName.Property = value;
-
-    // Calling Methods
-    instanceName.Method(); // Instance Method
-    ClassName.Method(); // Static / Class Method
-}
-
-*/

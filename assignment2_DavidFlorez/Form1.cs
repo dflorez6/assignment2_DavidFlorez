@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Windows.Forms;
 using System.Net.Mail;
+using System.IO; // FileStreamer
+using System;
 
 namespace assignment2_DavidFlorez
 {
@@ -26,20 +28,18 @@ namespace assignment2_DavidFlorez
             appointment = new Appointment();
         }
 
+
         //====================
         // Book Appointment
         //====================
-        // TODO: Add Description
+        // btnBookAppointment_Click: Button click event
+        // Description: On click event, this method will capture all of the user's input data, run validations to make sure
+        // that the input data meets the required criteria.
+        // If validations pass: an appointment object will be created and stored into office._appointments by calling
+        // office.BookAppointment(appointment) method from the Office Class.
+        // If validations fail: an error message will be displayed
         private void btnBookAppointment_Click(object sender, EventArgs e)
         {
-            // Office office = OfficeInstance();
-
-            // TODO: Assignment Requirements
-            /*
-             * Book appointment button shows correct message popups based on if there are errors present or not, as well as a 
-             * success popup outlining the appointment time
-            */
-
             // Capturing User Input: Patient's Data
             string patientName = txtPatientName.Text;
             DateTime patientDateOfBirth = Convert.ToDateTime(dtpPatientDoB.Text); // Convert Input Data (string) to DateTime
@@ -60,7 +60,7 @@ namespace assignment2_DavidFlorez
             // Validations
             //--------------------
             // Boolean declarations for returned helper methods returned values
-            bool validatedPatientName = ValidationHelper.IsValidString(patientName); // TODO: out parameter
+            bool validatedPatientName = ValidationHelper.IsValidString(patientName);
             bool validatedPatientAge = ValidationHelper.IsValidPatientAge(patientDateOfBirth);
             bool validatedPatientAddress = ValidationHelper.IsValidString(patientAddress);
             bool validatedPatientCity = ValidationHelper.IsValidString(patientCity);
@@ -70,9 +70,6 @@ namespace assignment2_DavidFlorez
             bool validatedPatientEmail = ValidationHelper.IsValidEmail(patientEmail);
             bool validatedAppointmentDuration = ValidationHelper.IsValidString(appointmentDuration);
             bool validatedAppointmentPurpose = ValidationHelper.IsValidString(appointmentPurpose);
-
-            // TODO: VALIDATE AppointmentTime to make sure it doesn't overlap with an already booked appointment
-            bool validatedAppointmentTime; // Will have another validation that will check that it doesn't overlap with an already booked appointment
 
             // If all input fields have been validated create Appointment
             // A bit nasty but it's an extra validation layer to make sure that all the required information is passed to book an appointment
@@ -84,34 +81,23 @@ namespace assignment2_DavidFlorez
                     appointmentTime, appointmentDuration, appointmentDurationIndex, appointmentPurpose
                     );
 
-                // Booking an appointment
+                // Call Book Appointment Method
                 office.BookAppointment(appointment);
-
-                // TODO: NOT YET UNCOMMENT LATER
-                /*
-                */
-                Console.WriteLine("Office Object inside validation-----------");
-                Console.WriteLine(office.NumberOfAppointments());
-
-
-                // TODO: NOT YET UNCOMMENT LATER
-                /*
-                Console.WriteLine("Office Object appointment list VALIDATED-----------");
-                foreach (var item in Office.ShowAppointments())
-                {
-                    Console.WriteLine(item);
-                }
-                */
-
-
+            }
+            else
+            {
+                // Incorrect data to generate an appointment will raise an error message
+                MessageBox.Show("One or more fields entered are not valid", "Incorrect Data", MessageBoxButtons.OK);
             }
 
         }
 
+
         //====================
         // Reset Fields
         //====================
-        // TODO: Add Description
+        // btnResetFields_Click: Button click event
+        // Description: On click event, all input fields will reset to their original values
         private void btnResetFields_Click(object sender, EventArgs e)
         {
             // Clearing all the patient's fields
@@ -130,16 +116,19 @@ namespace assignment2_DavidFlorez
             txtAppointmentPurpose.Text = "";
         }
 
+
         //====================
         // Pre-Fill Fields
         //====================
-        // TODO: Add Description
+        // btnPreFillFields_Click: Button click event
+        // Description: On click event, prefills all input fields with sample data. This method uses the default constructor from the 
+        // Appointment Class. It also resets any error message displayed on any label (fixes a small UI glitch)
         private void btnPreFillFields_Click(object sender, EventArgs e)
         {
             // Appointment appointment = AppointmentObject();
 
             // Prefill all the patient's fields
-            txtPatientName.Text = appointment.PatientName;            
+            txtPatientName.Text = appointment.PatientName;
             dtpPatientDoB.Text = appointment.PatientDoB.ToString();
             txtPatientAddress.Text = appointment.PatientAddress;
             txtPatientCity.Text = appointment.PatientCity;
@@ -166,19 +155,48 @@ namespace assignment2_DavidFlorez
             lblErrorPurpose.Text = "";
         }
 
+
         //====================
         // Print
         //====================
-        // TODO: Add Description
+        // btnPrint_Click: Button click event
+        // Description: On click event, starts by checking if there are any appointments previously booked.
+        // If there are no appointments booked: a message will be displayed letting the user know
+        // If there are appointments booked: creates an instance of StreamWriter to "print" a .txt file with all the booking information.
+        // Inside the StreamWriter a foreach loop is run on every booked appointment and it calls appointment.AppointmentToString(appointment)
+        // override method from the Appointment Class. It finally displays a success message letting the user know how many appointments were printed
         private void btnPrint_Click(object sender, EventArgs e)
         {
+            // Initial Declarations
+            string fileName = "Appointments.txt";
 
-            // TODO: Assignment Requirements
-            /*
-             * Print shows correct popups based on how many appointments are scheduled
-             * Print outputs to a Text file called Appointments.txt
-             * Print outputs ALL appointment information and in the correct format
-            */
+            // Checks if there are any booked appointments
+            if (office.NumberOfAppointments() == 0)
+            {
+                // No appointments previously booked will display a message
+                MessageBox.Show("There are currently no scheduled appointments to print.", "Time Conflict", MessageBoxButtons.OK);
+            }
+            else
+            {
+                // Appointments already booked
+                // Uses StreamWriter to write into a file in this case .txt
+                using (StreamWriter writer = new StreamWriter(fileName))
+                {
+                    // Iterates over booked appointments and calls AppointmentToString method to write data into the output file
+                    foreach (Appointment appointment in office.ReturnAppointments())
+                    {
+                        // Display output in the console to compare with the output file
+                        Console.WriteLine(appointment.AppointmentToString(appointment)); 
+
+                        // Output File
+                        writer.Write(appointment.AppointmentToString(appointment));
+                    }
+
+                }
+
+                // Successfully printed booked appointments
+                MessageBox.Show($"Successfully printed {office.NumberOfAppointments()} appointment(s) to Appointments.txt", "Time Conflict", MessageBoxButtons.OK);
+            }
 
         }
 
@@ -205,7 +223,7 @@ namespace assignment2_DavidFlorez
         {
             // Capture user's input
             DateTime patientDateOfBirth = Convert.ToDateTime(dtpPatientDoB.Text); // Convert Input Data (string) to DateTime
-            
+
             // Validation using Static Class Method
             bool validatedPatientAge = ValidationHelper.IsValidPatientAge(patientDateOfBirth);
 
@@ -308,11 +326,6 @@ namespace assignment2_DavidFlorez
             // If validation fails (returns false) an error message will be displayed
             lblErrorPurpose.Text = validatedAppointmentPurpose ? "" : "* can't be blank";
         }
-
-        //====================
-        // Helper Methods
-        //====================
-
 
     }
 }

@@ -12,7 +12,7 @@ namespace assignment2_DavidFlorez
     public class Appointment : Office
     {
         //====================
-        // Attributes or properties
+        // Properties
         //====================                
         public string PatientName { get; set; }
         public DateTime PatientDoB { get; set; }
@@ -72,7 +72,7 @@ namespace assignment2_DavidFlorez
             AppointmentPurpose = appointmentPurpose;
 
             // Calculates Appointment Time End Based on Appointment Time & Duration Params
-            AppointmentEndTime = CalculateAppointmentTimeEnd(appointmentTime, appointmentDurationIndex);
+            AppointmentEndTime = CalculateAppointmentEndTime(appointmentTime, appointmentDurationIndex);
         }
 
         //====================
@@ -82,13 +82,26 @@ namespace assignment2_DavidFlorez
         // Accepts: Appointment Object
         // Returns: string
         // Description: Override Method that returns an Appointment Object as a string
-
-        // TODO: 
-        // This method will be used for printing out the appointment
-        // So I think I need to pass an appointment from the list and it will convert the object into the output string
+        // * This method will be used for printing out the booked appointments
         public override string AppointmentToString(Appointment appointment)
         {
-            return $"Patient Name: ${PatientName}\n Age: ${AgeConversion(PatientDoB)}\n Address: {PatientAddress}\n City: {PatientCity}\n Province: {PatientProvince}\n Postal Code: {PatientPostalCode}\n Phone Number: {PatientPhone}\n Email: {PatientEmail}\n\n Appointment Time: {AppointmentTime}\n Appointment Duration: {AppointmentDuration}\n Description: {AppointmentPurpose}";
+            // Building the return string with the expected output style
+            string returnString;
+            returnString = "-----------------------------------------------------\n";
+            returnString += $"Patient Name: {PatientName}\n";
+            returnString += $"Age: ${AgeConversion(PatientDoB)}\n";
+            returnString += $"Address: {PatientAddress}\n";
+            returnString += $"City: {PatientCity}\n";
+            returnString += $"Province: {PatientProvince}\n";
+            returnString += $"Postal Code: {PatientPostalCode}\n";
+            returnString += $"Phone Number: {PatientPhone}\n";
+            returnString += $"Email: {PatientEmail}\n";
+            returnString += $"\n";
+            returnString += $"Appointment Time: {AppointmentTime.ToString("MM/dd/yyyy")} {AppointmentTime.ToString("hh:mmtt").ToLower()}\n";
+            returnString += $"Appointment Duration: {AppointmentDuration}\n";
+            returnString += $"Description: {AppointmentPurpose}\n";
+
+            return returnString;
         }
 
 
@@ -113,10 +126,13 @@ namespace assignment2_DavidFlorez
         // Accepts: DateTime & int
         // Returns: DateTime
         // Description: Calculates appointment time end based on appointment time & duration params
-        public DateTime CalculateAppointmentTimeEnd(DateTime appointmentTime, int appointmentDurationIndex)
+        public DateTime CalculateAppointmentEndTime(DateTime appointmentTime, int appointmentDurationIndex)
         {
+            // Initial Declarations
             string appointmentDuration = "";
 
+            // Depending on the passed parameter that correlates to an index in de comboBox for selecting time duration,
+            // the switch is beign used to return only a string that represents minutes for easier calculations
             switch (appointmentDurationIndex)
             {
                 case 0:
@@ -140,8 +156,6 @@ namespace assignment2_DavidFlorez
 
             return appointmentEndTime;
         }
-
-
 
     }
 
