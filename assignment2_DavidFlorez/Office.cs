@@ -5,6 +5,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -84,51 +85,23 @@ namespace assignment2_DavidFlorez
             }
             else
             {
-                // Appointments previously booked
-                // Iterates over existing appointments to validate if new appointment does not overlap with an existing one
-                
-                
-                // TODO: FIX VALIDATION
-                // TODO: Creo que esta mal formulado esto. El loop se esta cagando en lo que tengo que hacer
+                // Appointments previously booked                
+                // Creates a variable that stores the result of calling the method .Exists() on the list of _appointments                
+                bool isNewAppointmentOverlapping = _appointments.Exists(app => newAppointmentTime >= app.AppointmentTime && newAppointmentTime <= app.AppointmentEndTime);
 
-                for (int i = 0; i < _appointments.Count; i++)
+                // Validates if the new appointment overlaps with any previously booked appointments
+                // If true: A MessageBox will be shown to notify user of the problem
+                // If false: The new appointment will be booked
+                if (isNewAppointmentOverlapping)
                 {
-                    // Validates that new appointment will not overlap with existing appointment
-                    // If true: a MessageBox will notify the user of the problem
-                    // If false: Add new appointment to Instance._appointments
-                    // TODO: FIX VALIDATION 
-                    // TODO: I have to check that the newAppointmentStartTime is WITHIN the range of oldAppointment.StartTime && oldAppointment.EndTime
-                    if (_appointments[i].AppointmentTime >= newAppointmentTime && newAppointmentEndTime <= _appointments[i].AppointmentEndTime)
-                    {
-                        // New appointment overlaps with existing appointment
-                        MessageBox.Show("That appointment time conflicts with another patient. Please select a different time.", "Time Conflict", MessageBoxButtons.OK);
-                    }
-                    else
-                    {
-                        // Add appointment record
-                        _appointments.Add(appointment);
-                    }
+                    // New appointment overlaps with existing appointment
+                    MessageBox.Show("That appointment time conflicts with another patient. Please select a different time.", "Time Conflict", MessageBoxButtons.OK);
                 }
-
-                /*
-                foreach (Appointment previousAppointment in _appointments)
+                else
                 {
-                    // Validates that new appointment will not overlap with existing appointment
-                    // If true: a MessageBox will notify the user of the problem
-                    // If false: Add new appointment to Instance._appointments
-                    if (newAppointmentTime >= previousAppointment.AppointmentTime && newAppointmentEndTime <= previousAppointment.AppointmentEndTime)
-                    {
-                        // New appointment overlaps with existing appointment
-                        MessageBox.Show("That appointment time conflicts with another patient. Please select a different time.", "Time Conflict", MessageBoxButtons.OK);
-                    }
-                    else
-                    {
-                        // Add appointment record
-                        _appointments.Add(appointment);
-                    }
-
+                    // Add appointment record
+                    _appointments.Add(appointment);
                 }
-                */
 
 
             }
